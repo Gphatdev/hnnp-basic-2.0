@@ -1,0 +1,9 @@
+node_modules/
+package-lock.json
+cookie.txt
+auth.json
+utils/data/fbstate.json
+includes/data.sqlite
+*.txt
+Fca_Database
+fca-config.json
