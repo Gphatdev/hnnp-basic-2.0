@@ -1,6 +1,6 @@
 {
     "name": "nknp-basic",
-    "version": "3.0.1",
+    "version": "4.0.0",
     "description": "NKNP AGENCY - Facebook Messenger Bot",
     "main": "mirai.js",
     "scripts": {
@@ -17,6 +17,7 @@
         "bluebird": "^2.11.0",
         "body-parser": "^1.20.3",
         "caesar-salad": "^2.1.0",
+        "canvas": "^3.2.3",
         "chalk": "^4.1.2",
         "cheerio": "^1.0.0",
         "child_process": "^1.0.2",
@@ -24,7 +25,7 @@
         "eval": "^0.1.8",
         "extract-zip": "^2.0.1",
         "figlet": "^1.7.0",
-        "fs-extra": "^11.2.0",
+        "fs-extra": "^11.4.0",
         "gradient-string": "^2.0.2",
         "jimp": "^1.6.0",
         "moment-timezone": "^0.5.45",

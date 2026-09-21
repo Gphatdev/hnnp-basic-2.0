@@ -5,7 +5,7 @@ global.countRestart = 0;
 
 function startBot(message) {
     (message) ? logger(message, "[ Starting ]") : "";
-    const child = spawn("node", ["--trace-warnings", "--async-stack-traces", "mirai.js"], {
+    const child = spawn("node", ["--trace-warnings", "--async-stack-traces", "main.js"], {
         cwd: __dirname,
         stdio: "inherit",
     });

@@ -2,7 +2,7 @@ module.exports.config = {
 	name: "ping",
 	version: "1.0.5",
 	hasPermssion: 1,
-	credits: "NKNP AGENCY",
+	credits: "GiaPhat Dev",
 	description: "tag toàn bộ thành viên",
 	commandCategory: "Box",
 	usages: "[Text]",

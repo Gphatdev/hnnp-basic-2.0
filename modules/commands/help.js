@@ -2,10 +2,10 @@ const axios = require('axios');
 
 this.config = {
     name: "help",
-    version: "1.1.1",
+    version: "1.1.2",
     hasPermssion: 0,
-    credits: "DC-Nam",
-    description: "Xem danh sách lệnh và info",
+    credits: "GiaPhat dev & AI",
+    description: "Xem danh sách lệnh và thông tin chi tiết",
     commandCategory: "Box",
     usages: "[tên lệnh/all]",
     cooldowns: 5,
@@ -25,9 +25,9 @@ this.run = async function({ api, event, args }) {
 
     if (type == "all") {
         for (const cmd of cmds.values()) {
-            msg += `${++i}. ${cmd.config.name}\n→ Mô tả: ${cmd.config.description}\n────────────────\n`;
+            msg += `${++i}. ${cmd.config.name}\n👉 Mô tả: ${cmd.config.description}\n\n`;
         }
-        return api.sendMessage(msg, tid, mid);
+        return api.sendMessage(msg.trim(), tid, mid);
     }
 
     if (type) {
@@ -41,7 +41,7 @@ this.run = async function({ api, event, args }) {
             const commandValues = [...cmds.keys()];
             for (const cmd of commandValues) allCommandName.push(cmd);
             const checker = stringSimilarity.findBestMatch(commandName, allCommandName);
-            msg = `❎ Không tìm thấy lệnh '${type}' trong hệ thống.\n📝 Lệnh gần giống được tìm thấy '${checker.bestMatch.target}'`;
+            msg = `❎ Không tìm thấy lệnh '${type}' trong hệ thống!\n💡 Lệnh gần giống nhất: '${checker.bestMatch.target}'`;
             return api.sendMessage(msg, tid, mid);
         }
         const cmd = cmds.get(type).config;
@@ -54,16 +54,39 @@ this.run = async function({ api, event, args }) {
             })).data;
             image.push(stream);
         }
-        msg = `[ HƯỚNG DẪN SỬ DỤNG ]\n─────────────────\n[📜] - Tên lệnh: ${cmd.name}\n[👤] - Tác giả: ${cmd.credits}\n[🌾] - Phiên bản: ${cmd.version}\n[🌴] - Quyền Hạn: ${TextPr(cmd.hasPermssion)}\n[📝] - Mô Tả: ${cmd.description}\n[🏷️] - Nhóm: ${cmd.commandCategory}\n[🍁] - Cách Dùng: ${cmd.usages}\n[⏳] - Thời Gian Chờ: ${cmd.cooldowns}s\n─────────────────\n📌 Hướng Dẫn Sử Dụng Cho Người Mới`;
+        msg = 
+`📖 HƯỚNG DẪN SỬ DỤNG
+
+📜 Lệnh: ${cmd.name}
+👤 Tác giả: ${cmd.credits}
+🏷️ Phiên bản: ${cmd.version}
+🔐 Quyền hạn: ${TextPr(cmd.hasPermssion)}
+📝 Mô tả: ${cmd.description}
+📂 Nhóm: ${cmd.commandCategory}
+⚙️ Cách dùng: ${cmd.usages}
+⏳ Thời gian chờ: ${cmd.cooldowns}s`;
+
         return api.sendMessage({ body: msg, attachment: image }, tid, mid);
     } else {
         CmdCategory();
         array.sort(S("nameModule"));
         for (const cmd of array) {
-            msg += `│\n│ ${cmd.cmdCategory.toUpperCase()}\n├────────⭔\n│ Tổng lệnh: ${cmd.nameModule.length} lệnh\n│ ${cmd.nameModule.join(", ")}\n├────────⭔\n`;
+            msg += `📂 ${cmd.cmdCategory.toUpperCase()} (${cmd.nameModule.length})\n` +
+                   `▸ ${cmd.nameModule.join(", ")}\n\n`;
         }
-        msg += `📝 Tổng số lệnh: ${cmds.size} lệnh\n👤 Tổng số admin bot: ${admin.length}\n→ Tên Bot: ${NameBot}\n🔰 Phiên bản: ${version}\n→ Admin: Phạm Minh Đồng\n📎 Link: ${global.config.FACEBOOK_ADMIN}\n${prefix}help + tên lệnh để xem chi tiết\n${prefix}help + all để xem tất cả lệnh`;
-        return api.sendMessage(`╭─────────────⭓\n${msg}`, tid);
+        msg += 
+`📊 THÔNG TIN BOT
+🤖 Bot: ${NameBot} | 🔰 Ver: ${version}
+👑 Admin: Nguyễn Gia Phát (Gphat dev)
+👥 Tổng Admin: ${admin.length}
+📦 Tổng số lệnh: ${cmds.size}
+🔗 FB Admin: ${global.config.FACEBOOK_ADMIN}
+
+👉 Cú pháp:
+• ${prefix}help + [tên lệnh] để xem chi tiết
+• ${prefix}help + all để xem toàn bộ lệnh`;
+
+        return api.sendMessage(msg, tid, mid);
     }
 
     function CmdCategory() {

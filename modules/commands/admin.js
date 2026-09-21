@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports.config = {
   name: "admin",
-  version: "1.0.0",
+  version: "1.0.1",
   hasPermssion: 1,
   credits: "quocduy & AI",
   description: "Manage admins",
@@ -69,7 +69,17 @@ module.exports.run = async function({ api, event, args }) {
       break;
 
     default:
-      api.sendMessage("Invalid subcommand. Usage: admin list/add/remove [userID]", event.threadID, event.messageID);
+      const helpMessage = 
+        "== [ ADMIN SETTING ] ==\n" +
+        "1. admin list\n" +
+        "   👉 Xem danh sách ID Admin hiện tại.\n\n" +
+        "2. admin add [userID]\n" +
+        "   👉 Thêm một ID người dùng vào danh sách Admin.\n\n" +
+        "3. admin remove [userID]\n" +
+        "   👉 Xóa một ID người dùng khỏi danh sách Admin.\n" +
+        "========================";
+      
+      api.sendMessage(helpMessage, event.threadID, event.messageID);
       break;
   }
 };

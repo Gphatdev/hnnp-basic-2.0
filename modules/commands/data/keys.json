@@ -1,0 +1,23 @@
+{
+    "gphat": {
+        "ct": "HNNP STUDIO",
+        "ct2": "HNNP",
+        "idbang": "43",
+        "logo": "C:\\Users\\Administrator\\Downloads\\nknp-basic\\modules\\commands\\data\\FREEFIRE\\logokey\\HBOTVN.jpg",
+        "admins": [],
+        "ctvs": [],
+        "isSystemDefault": true,
+        "description": "Cấu hình gốc hệ thống được đồng bộ hóa mặc định bởi HNNP STUDIO."
+    },
+    "hh": {
+        "ct": "HNNP STUDIO",
+        "ct2": "HNNP",
+        "idbang": "43",
+        "logo": "C:\\Users\\Administrator\\Desktop\\LEGIBOT\\modules\\data\\logo\\default.png",
+        "admins": [
+            "61571215247209"
+        ],
+        "ctvs": [],
+        "isSystemDefault": false
+    }
+}

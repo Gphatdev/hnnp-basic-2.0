@@ -31,7 +31,8 @@ module.exports.handleEvent = async function ({ api, event, client }) {
     lowerBody === "dùng sao"
   ) {
     api.sendMessage(
-      `✏️ Prefix của nhóm: ${prefix}\n📎 Prefix hệ thống: ${PREFIX}`,
+      ` ► Prefix của nhóm: ${prefix}\n 
+      ► Prefix hệ thống: ${PREFIX}\n`,
       threadID,
       event.messageID
     );

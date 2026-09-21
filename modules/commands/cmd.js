@@ -1,8 +1,8 @@
 module.exports.config = {
     name: "cmd",
-    version: "1.0.0",
+    version: "1.0.1",
     hasPermssion: 2,
-    credits: "NKNP AGENCY",
+    credits: "GiaPhat dev & AI",
     description: "Quản lý/Kiểm soát toàn bộ module của bot",
     commandCategory: "Admin",
     usages: "[load/unload/loadAll/unloadAll/info] [tên module]",
@@ -20,7 +20,7 @@ const loadCommand = function ({ moduleList, threadID, messageID }) {
 
     for (const nameModule of moduleList) {
         if (!nameModule) {
-            errorList.push('- Module name is empty');
+            errorList.push('• Tên module không được để trống');
             continue;
         }
 
@@ -31,7 +31,7 @@ const loadCommand = function ({ moduleList, threadID, messageID }) {
             global.client.commands.delete(nameModule);
 
             if (!command.config || !command.run || !command.config.commandCategory) 
-                throw new Error('Module không đúng định dạng!');
+                throw new Error('Cấu trúc file không hợp lệ hoặc thiếu thông tin bắt buộc');
 
             global.client['eventRegistered'] = global.client['eventRegistered'].filter(info => info !== command.config.name);
             
@@ -62,14 +62,24 @@ const loadCommand = function ({ moduleList, threadID, messageID }) {
             global.client.commands.set(command.config.name, command);
             logger.loader('Loaded command ' + command.config.name + '!');
         } catch (error) {
-            errorList.push(`- ${nameModule} reason: ${error.message} at ${error.stack}`);
+            errorList.push(`• Module [ ${nameModule} ] ➜ ${error.message}`);
         }
     }
 
-    if (errorList.length !== 0) {
-        api.sendMessage('Những module đã xảy ra sự cố khi đang load: ' + errorList.join(' '), threadID, messageID);
+    const successCount = moduleList.length - errorList.length;
+
+    // Chuẩn bị thông báo kết quả
+    let responseMsg = "";
+
+    if (successCount > 0) {
+        responseMsg += `🎉 Tải thành công ${successCount} module!\n`;
     }
-    api.sendMessage('Loaded ' + (moduleList.length - errorList.length) + ' module(s)', threadID, messageID);
+
+    if (errorList.length > 0) {
+        responseMsg += `\n⚠️ Có ${errorList.length} module gặp sự cố khi tải:\n` + errorList.join('\n');
+    }
+
+    api.sendMessage(responseMsg.trim(), threadID, messageID);
     writeFileSync(process.cwd()+'/config.json', JSON.stringify(configValue, null, 4), 'utf8');
 };
 
@@ -93,7 +103,7 @@ const unloadModule = function ({ moduleList, threadID, messageID }) {
     }
 
     writeFileSync(process.cwd()+'/config.json', JSON.stringify(configValue, null, 4), 'utf8');
-    return api.sendMessage(`Unloaded ${moduleList.length} module(s)`, threadID, messageID);
+    return api.sendMessage(`🔒 Đã hủy tải thành công ${moduleList.length} module!`, threadID, messageID);
 };
 
 module.exports.run = function ({ event, args, api }) {
@@ -105,10 +115,10 @@ module.exports.run = function ({ event, args, api }) {
 
     switch (command) {
         case "load":
-            if (moduleList.length === 0) return api.sendMessage("Tên module không được để trống!", threadID, messageID);
+            if (moduleList.length === 0) return api.sendMessage("⚠️ Vui lòng nhập tên module cần tải!", threadID, messageID);
             return loadCommand({ moduleList, threadID, messageID });
         case "unload":
-            if (moduleList.length === 0) return api.sendMessage("Tên module không được để trống!", threadID, messageID);
+            if (moduleList.length === 0) return api.sendMessage("⚠️ Vui lòng nhập tên module cần hủy tải!", threadID, messageID);
             return unloadModule({ moduleList, threadID, messageID });
         case "loadall":
             const loadAllModules = readdirSync(__dirname).filter((file) => file.endsWith(".js") && !file.includes('example'));
@@ -122,17 +132,17 @@ module.exports.run = function ({ event, args, api }) {
             const commandName = moduleList.join("") || "";
             const commandInfo = global.client.commands.get(commandName);
 
-            if (!commandInfo) return api.sendMessage("Module bạn nhập không tồn tại!", threadID, messageID);
+            if (!commandInfo) return api.sendMessage("⚠️ Module bạn tra cứu không tồn tại trên hệ thống!", threadID, messageID);
 
             const { name, version, hasPermssion, credits, cooldowns, dependencies } = commandInfo.config;
 
             return api.sendMessage(
-                "=== " + name.toUpperCase() + " ===\n" +
-                "- Được code bởi: " + credits + "\n" +
-                "- Phiên bản: " + version + "\n" +
-                "- Yêu cầu quyền hạn: " + ((hasPermssion === 0) ? "Người dùng" : (hasPermssion === 1) ? "Quản trị viên" : "Người vận hành bot") + "\n" +
-                "- Thời gian chờ: " + cooldowns + " giây(s)\n" +
-                `- Các package yêu cầu: ${(Object.keys(dependencies || {})).join(", ") || "Không có"}`,
+                `📌 THÔNG TIN MODULE: ${name.toUpperCase()}\n` +
+                `👤 Tác giả: ${credits}\n` +
+                `🏷️ Phiên bản: ${version}\n` +
+                `🔐 Quyền hạn: ${((hasPermssion === 0) ? "Người dùng" : (hasPermssion === 1) ? "Quản trị viên" : "Operator Bot")}\n` +
+                `⏳ Thời gian chờ: ${cooldowns}s\n` +
+                `📦 Thư viện yêu cầu: ${(Object.keys(dependencies || {})).join(", ") || "Không có"}`,
                 threadID, messageID
             );
         }
