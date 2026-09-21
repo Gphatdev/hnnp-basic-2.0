@@ -1,7 +1,7 @@
-# NKNP AGENCY
+# HNNP STUDIO
 
 <p align="center">
-    <img src="https://files.catbox.moe/qq3jvx.png" alt="NKNP AGENCY" width="720">
+    <img src="https://files.catbox.moe/20hm3m.png" alt="HNNP STUDIO" width="720">
 </p>
 
 > Facebook Messenger Bot - bản cơ bản, dễ cài, dễ chỉnh và chạy trực tiếp bằng Node.js.
@@ -111,6 +111,6 @@ npm start
 3. Thực hiện thay đổi và kiểm tra bot.
 4. Tạo Pull Request.
 
-## NKNP AGENCY
+## HNNP STUDIO
 
 Dự án được xây dựng để làm nền tảng Messenger Bot đơn giản, dễ tùy biến và phù hợp cho việc học Node.js.
